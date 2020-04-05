@@ -1,26 +1,27 @@
 import React, { useEffect, useState } from "react";
+import "./Note.css";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Save from "@material-ui/icons/Save";
 import Cancel from "@material-ui/icons/Cancel";
-
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import TextField from "@material-ui/core/TextField";
+import SelectColor from "../SelectColor";
 
 const Note = (props) => {
-  const { dispatch, id, colorId = "", text = "" } = props;
+  const { dispatch, id, colorId = "orange", text = "" } = props;
 
   const [viewMode, setViewMode] = useState("view");
 
   const [newText, setNewText] = useState();
 
-  const noteClass = `note ${colorId}`;
+  const [selectedColorId, setSelectedColorId] = useState();
 
   const handleTextChange = (event) => {
     setNewText(event.target.value);
@@ -32,13 +33,16 @@ const Note = (props) => {
       note: {
         id: id,
         text: newText,
+        colorId: selectedColorId,
       },
     };
     dispatch(updateAction);
+    setViewMode("view");
   };
 
   const handleEditCancelClick = () => {
     setNewText(text);
+    setSelectedColorId(colorId);
     setViewMode("view");
   };
 
@@ -62,14 +66,20 @@ const Note = (props) => {
       },
     };
     dispatch(deleteAction);
+    setViewMode("view");
   };
 
   useEffect(() => {
     setNewText(text);
-  }, [text]);
+    setSelectedColorId(colorId);
+  }, [text, colorId]);
+
+  const handleSelectColor = (colorId) => {
+    setSelectedColorId(colorId);
+  };
 
   return (
-    <Card className={noteClass}>
+    <Card className={"note note-" + colorId} borderColor={colorId} border={5}>
       <CardContent>
         {(viewMode === "view" || viewMode === "confirmDelete") && (
           <Typography variant="paragraph" color="textSecondary" component="p">
@@ -77,14 +87,20 @@ const Note = (props) => {
           </Typography>
         )}
         {viewMode === "edit" && (
-          <TextField
-            value={newText}
-            variant="outlined"
-            label="Note text"
-            multiline
-            fullWidth
-            onChange={handleTextChange}
-          />
+          <>
+            <TextField
+              value={newText}
+              label="Note text"
+              multiline
+              fullWidth
+              onChange={handleTextChange}
+              style={{ marginBottom: "1rem" }}
+            />
+            <SelectColor
+              selectedColorId={selectedColorId}
+              selectColorCallback={handleSelectColor}
+            />
+          </>
         )}
       </CardContent>
       <Divider />

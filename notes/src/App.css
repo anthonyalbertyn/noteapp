@@ -1,0 +1,17 @@
+body {
+  margin: 0;
+  padding: 2rem;
+}
+
+.app {
+  width: 100%;
+  max-width: 600px;
+  margin: 2rem auto;
+}
+
+@media screen and (max-width: 600px) {
+  .app {
+    margin: 0;
+    max-width: 100%;
+  }
+}

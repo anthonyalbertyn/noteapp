@@ -1,0 +1,15 @@
+.note {
+  margin-bottom: 1rem;
+}
+
+.note-blue {
+  border: 2px solid blue;
+}
+
+.note-green {
+  border: 2px solid green;
+}
+
+.note-orange {
+  border: 2px solid orange;
+}

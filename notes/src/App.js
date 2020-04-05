@@ -4,7 +4,7 @@ import NotePage from "./NotePage";
 
 const App = () => {
   return (
-    <div className="App">
+    <div className="app">
       <NotePage />
     </div>
   );
